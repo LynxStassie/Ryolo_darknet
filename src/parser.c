@@ -202,7 +202,7 @@ convolutional_layer parse_convolutional(list *options, size_params params)
     w = params.w;
     c = params.c;
     batch=params.batch;
-    if(!(h && w && c)) error("Layer before convolutional layer must output image.");
+    if(!(h && w && c)) error("Layer before convolutional layer must output image.", DARKNET_LOC);
     int batch_normalize = option_find_int_quiet(options, "batch_normalize", 0);
     int cbn = option_find_int_quiet(options, "cbn", 0);
     if (cbn) batch_normalize = 2;
@@ -567,7 +567,7 @@ layer parse_Ryolo(list* options, size_params params)
     layer l = make_Ryolo_layer(params.batch, params.w, params.h, num, total, mask, classes, max_boxes);
     if (l.outputs != params.inputs) {
         printf("Error: l.outputs == params.inputs \n");
-        printf("filters= in the [convolutional]-layer doesn't correspond to classes= or mask= in [Ryolo]-layer \n");
+        printf("filters= in the [convolutional]-layer doesn't correspond to classes= or mask= in [Ryolo]-layer %s \n", DARKNET_LOC);
         exit(EXIT_FAILURE);
     }
     //assert(l.outputs == params.inputs);

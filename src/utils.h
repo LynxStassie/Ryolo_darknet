@@ -13,7 +13,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#define DARKNET_LOC __FILE__, __func__, __LINE__
 LIB_API void free_ptrs(void **ptrs, int n);
 LIB_API void top_k(float *a, int n, int k, int *index);
 
