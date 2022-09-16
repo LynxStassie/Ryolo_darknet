@@ -319,10 +319,10 @@ void top_k(float *a, int n, int k, int *index)
     }
 }
 
-void error(const char *s)
+void error(const char * const msg, const char * const filename, const char * const funcname, const int line)
 {
-    perror(s);
-    assert(0);
+    fprintf(stderr, "Darknet error location: %s, %s, line #%d\n", filename, funcname, line);
+    perror(msg);
     exit(EXIT_FAILURE);
 }
 
