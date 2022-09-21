@@ -565,9 +565,11 @@ layer parse_Ryolo(list* options, size_params params)
     int* mask = parse_yolo_mask(a, &num);
     int max_boxes = option_find_int_quiet(options, "max", 200);
     layer l = make_Ryolo_layer(params.batch, params.w, params.h, num, total, mask, classes, max_boxes);
+    printf("SPEC_OUT: layer outputs = %d", l.outputs);
+
     if (l.outputs != params.inputs) {
-        printf("Error: l.outputs == params.inputs \n");
-        printf("filters= in the [convolutional]-layer doesn't correspond to classes= or mask= in [Ryolo]-layer %s \n", DARKNET_LOC);
+        printf("Error: l.outputs %d == params.inputs %d \n",l.outputs,params.inputs);
+        printf("filters= in the [convolutional]-layer doesn't correspond to classes= or mask= in [Ryolo]-layer %s%s%s \n", DARKNET_LOC);
         exit(EXIT_FAILURE);
     }
     //assert(l.outputs == params.inputs);
@@ -1463,6 +1465,7 @@ network parse_network_cfg_custom(char *filename, int batch, int time_steps)
     params.w = net.w;
     params.c = net.c;
     params.inputs = net.inputs;
+
     if (batch > 0) net.batch = batch;
     if (time_steps > 0) net.time_steps = time_steps;
     if (net.batch < 1) net.batch = 1;
@@ -1531,8 +1534,10 @@ network parse_network_cfg_custom(char *filename, int batch, int time_steps)
         }
         //Ryolo
         else if (lt == RYOLO) {
+            printf("SPEC_OUT: net inputs = %d", params.inputs);
             l = parse_Ryolo(options, params);
             l.keep_delta_gpu = 1;
+
         }
         //Syolo
         else if (lt == LOGXENT) {
